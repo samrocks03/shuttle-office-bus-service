@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   #
-  post "/auth/login", to: "auth#login"
+  post "/login", to: "users#login"
 
   resources :roles
   resources :companies

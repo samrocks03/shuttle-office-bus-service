@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  has_secure_password
+  # bcrypt method that encrypts pw for each user
+  
+
   belongs_to :role
   belongs_to :company
   has_many :reservations, dependent: :destroy

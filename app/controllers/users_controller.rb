@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :authorized, only: [:create, :login]
+  rescue_from ActiveRecord::RecordInvalid, with: :handle_invalid_record
 
   before_action :set_user, only: %i[show update destroy]
 
@@ -15,13 +17,34 @@ class UsersController < ApplicationController
     render json: @user
   end
 
+
+  def login
+    @user = User.find_by!(id: login_params[:id])
+
+    if @user.authenticate(login_params[:password])
+      @token = encode_token(user_id: login_params[:id])
+      render json: {
+        user: UserSerializer.new(@user),
+        token: @token,
+      }, status: :accepted
+    else
+      render json: {
+        error: "Invalid password"
+      }, status: :unauthorized
+    end
+  end
+
+
   # POST /users
   # POST /users.json
   def create
     @user = User.new(user_params)
-
+    @token = encode_token(user_id: @user.id)
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: {
+        user: UserSerializer.new(@user),
+        token: @token
+      }, status: :created
     else
       render json: @user.errors.full_messages, status: :unprocessable_entity
     end
@@ -51,6 +74,14 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :phone_number, :company_id, :role_id, :password_digest)
+    params.require(:user).permit(:first_name, :last_name, :phone_number, :company_id, :role_id, :password)
+  end
+
+  def handle_invalid_errors(e)
+    render json: {errors: e.record.errors.full_messages}
+  end
+
+  def login_params
+    params.require(:user).permit(:id, :password)
   end
 end
