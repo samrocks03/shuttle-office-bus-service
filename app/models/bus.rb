@@ -1,5 +1,5 @@
 class Bus < ApplicationRecord
-  has_many :schedules
+  has_many :schedules, dependent: :destroy
   belongs_to :company
 
   validates :number, :capacity, :model, presence: true
