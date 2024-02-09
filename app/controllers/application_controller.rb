@@ -4,8 +4,8 @@ class ApplicationController < ActionController::API
   private
 
   def encode_token(payload)
-    # JWT.encode(payload, Rails.application.credentials[:secret_key_base])
-    JWT.encode(payload,'123')
+    JWT.encode(payload, Rails.application.credentials[:secret_key_base])
+    # JWT.encode(payload,'123')
 
     # This method takes a payload and returns a JWT token.
     # The payload is a hash that contains the user's id.
@@ -19,8 +19,8 @@ class ApplicationController < ActionController::API
       token = header.split(" ").last
       begin
         # byebug
-        # JWT.decode(token,  Rails.application.credentials[:secret_key_base])
-        JWT.decode(token,'123')
+        JWT.decode(token,  Rails.application.credentials[:secret_key_base])
+        # JWT.decode(token,'123')
 
       rescue JWT::DecodeError
         nil
