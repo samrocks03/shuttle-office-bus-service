@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, :phone_number, presence: true
   validates :phone_number, numericality: true, format: { with: /\A\d{10}\z/, message: "must be 10 digits" }
+  validates :phone_number, uniqueness: true
 
   before_validation :normalize_fields
 
