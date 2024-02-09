@@ -4,7 +4,7 @@ class Company < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :buses, dependent: :destroy
 
-  has_one :schedule, dependent: :destroy
+  # has_one :schedule, dependent: :destroy
 
   validates :name, :location, presence: true
 end

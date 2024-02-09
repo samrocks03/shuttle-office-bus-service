@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_09_035504) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_09_113455) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,7 +42,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_09_035504) do
   end
 
   create_table "reservations", force: :cascade do |t|
-    t.date "date"
     t.bigint "schedule_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
@@ -59,16 +58,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_09_035504) do
 
   create_table "schedules", force: :cascade do |t|
     t.text "start_point"
-    t.integer "arrival_minute"
-    t.integer "arrival_hour"
-    t.integer "departure_minute"
-    t.integer "departure_hour"
     t.bigint "bus_id", null: false
-    t.bigint "company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "date"
+    t.time "arrival_time"
+    t.time "departure_time"
     t.index ["bus_id"], name: "index_schedules_on_bus_id"
-    t.index ["company_id"], name: "index_schedules_on_company_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -89,7 +85,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_09_035504) do
   add_foreign_key "reservations", "schedules"
   add_foreign_key "reservations", "users"
   add_foreign_key "schedules", "buses"
-  add_foreign_key "schedules", "companies"
   add_foreign_key "users", "companies"
   add_foreign_key "users", "roles"
 end
