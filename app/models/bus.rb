@@ -3,11 +3,13 @@ class Bus < ApplicationRecord
   belongs_to :company
 
   validates :number, :capacity, :model, presence: true
-  validates :normalize_model, presence: true
+  validates :number, uniqueness: true
 
+  before_validation :normalize_model
   private
 
   def normalize_model
     self.model = model.downcase.titleize
+    self.number = number.downcase.titleize
   end
 end

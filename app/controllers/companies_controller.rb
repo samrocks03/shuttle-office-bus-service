@@ -2,20 +2,17 @@ class CompaniesController < ApplicationController
   before_action :set_company, only: %i[show update destroy]
 
   # GET /companies
-  # GET /companies.json
   def index
     @companies = Company.all
     render json: @companies
   end
 
   # GET /companies/1
-  # GET /companies/1.json
   def show
     render json: @company
   end
 
   # POST /companies
-  # POST /companies.json
   def create
     @company = Company.new(company_params)
 

@@ -3,5 +3,5 @@ class Reservation < ApplicationRecord
   belongs_to :schedule
   has_one :payment
 
-  validates :date, presence: true
+  validates :schedule_id, :user_id, presence: true
 end

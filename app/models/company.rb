@@ -7,4 +7,10 @@ class Company < ApplicationRecord
   # has_one :schedule, dependent: :destroy
 
   validates :name, :location, presence: true
+  before_validation :normalise
+
+  def normalise
+    self.name = name.downcase.titleize
+    self.location = location.downcase.titleize
+  end
 end

@@ -5,19 +5,17 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
 
   # GET /users
-  # GET /users.json
   def index
     @users = User.all
     render json: @users
   end
 
   # GET /users/1
-  # GET /users/1.json
   def show
     render json: @user
   end
 
-
+  # POST /login
   def login
     @user = User.find_by!(id: login_params[:id])
 
@@ -36,7 +34,6 @@ class UsersController < ApplicationController
 
 
   # POST /users
-  # POST /users.json
   def create
     @user = User.new(user_params)
     @token = encode_token(user_id: @user.id)
@@ -60,6 +57,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # DELETE /users/1
   def destroy
     @user.destroy
     render json: { message: "User Successfully deleted"}

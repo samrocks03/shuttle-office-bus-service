@@ -2,25 +2,24 @@ class BusesController < ApplicationController
   before_action :set_bus, only: %i[show update destroy]
 
   # GET /buses
-  # GET /buses.json
   def index
     @buses = Bus.all
-    render json: @buses
+    render json: @buses.map(&method(:bus_json))
+    # @buses = Bus.all
   end
 
   # GET /buses/1
-  # GET /buses/1.json
   def show
-    render json: @bus
+    # render json: @bus
+    render json: bus_json(@bus)
   end
 
   # POST /buses
-  # POST /buses.json
   def create
     @bus = Bus.new(bus_params)
 
     if @bus.save
-      render json: @bus, status: :created, location: @bus
+      render json: bus_json(@bus), status: :created, location: @bus
     else
       render json: @bus.errors.full_messages, status: :unprocessable_entity
     end
@@ -30,7 +29,7 @@ class BusesController < ApplicationController
   # PATCH/PUT
   def update
     if @bus.update(bus_params)
-      render json: @bus
+      render json: bus_json(@bus)
     else
       render json: @bus.errors.full_messages, status: :unprocessable_entity
     end
@@ -38,6 +37,7 @@ class BusesController < ApplicationController
 
   def destroy
     @bus.destroy
+    render json: { message: 'Bus was successfully destroyed' }
   end
 
   private
@@ -52,4 +52,14 @@ class BusesController < ApplicationController
     params.require(:bus).permit(:number, :capacity, :model, :company_id)
   end
 
+  # Custom method to render bus JSON
+  def bus_json(bus)
+    {
+      id: bus.id,
+      number: bus.number,
+      capacity: bus.capacity,
+      model: bus.model,
+      company_id: bus.company_id
+    }
+  end
 end

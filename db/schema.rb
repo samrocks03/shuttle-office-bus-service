@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_09_113455) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_10_190809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_09_113455) do
     t.date "date"
     t.time "arrival_time"
     t.time "departure_time"
+    t.integer "available_seats"
     t.index ["bus_id"], name: "index_schedules_on_bus_id"
   end
 
