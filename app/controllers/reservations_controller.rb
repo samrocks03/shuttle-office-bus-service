@@ -15,14 +15,19 @@ class ReservationsController < ApplicationController
   # POST /reservations
   def create
     @reservation = Reservation.new(reservation_params)
-    if @reservation.save
-      # Update the available seats count
-      byebug
-      @schedule = @reservation.schedule
-      @schedule.update(available_seats: @schedule.available_seats - 1)
-      render json: reservation_json(@reservation), status: :created, location: @reservation
+    @schedule = @reservation.schedule
+
+    # Check if there are available seats on the bus
+    if @schedule.available_seats > 0
+      if @reservation.save
+        # Update the available seats count
+        @schedule.decrement_available_seat
+        render json: reservation_json(@reservation), status: :created, location: @reservation
+      else
+        render json: @reservation.errors.full_messages, status: :unprocessable_entity
+      end
     else
-      render json: @reservation.errors.full_messages, status: :unprocessable_entity
+      render json: { message: 'Cannot make reservation, no seats available!' }, status: :unprocessable_entity
     end
   end
 

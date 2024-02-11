@@ -2,20 +2,17 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: %i[show update destroy]
 
   # GET /schedules
-  # GET /schedules.json
   def index
     @schedules = Schedule.all
     render json: @schedules.map(&method(:schedule_json))
   end
 
   # GET /schedules/1
-  # GET /schedules/1.json
   def show
     render json: schedule_json(@schedule)
   end
 
   # POST /schedules
-  # POST /schedules.json
   def create
     @schedule = Schedule.new(schedule_params)
 
