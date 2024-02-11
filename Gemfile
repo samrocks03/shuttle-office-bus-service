@@ -19,10 +19,8 @@ gem 'rack-cors'
 
 gem 'active_model_serializers', '~> 0.10.12'
 
-# gem 'devise', '~> 4.9.3'
-# gem 'devise'
-# gem 'devise-jwt'
 gem 'jsonapi-serializer'
+gem 'cancancan'
 
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
