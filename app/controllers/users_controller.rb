@@ -1,8 +1,11 @@
 class UsersController < ApplicationController
   skip_before_action :authorized, only: [:create, :login]
   rescue_from ActiveRecord::RecordInvalid, with: :handle_invalid_record
-
   before_action :set_user, only: %i[show update destroy]
+
+
+  load_and_authorize_resource :except => %i[login create]
+  # check for except: :create, :login
 
   # GET /users
   def index
@@ -17,7 +20,7 @@ class UsersController < ApplicationController
 
   # POST /login
   def login
-    @user = User.find_by!(id: login_params[:id])
+    @user = User.find_by!(email: login_params[:email])
 
     if @user.authenticate(login_params[:password])
       token = encode_token({user_id: @user.id})
@@ -72,7 +75,7 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :phone_number, :company_id, :role_id, :password)
+    params.require(:user).permit(:first_name, :last_name, :phone_number,:email, :company_id, :password)
   end
 
   def handle_invalid_errors(e)
@@ -80,6 +83,6 @@ class UsersController < ApplicationController
   end
 
   def login_params
-    params.require(:user).permit(:id, :password)
+    params.require(:user).permit(:email, :password)
   end
 end

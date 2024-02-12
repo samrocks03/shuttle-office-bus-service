@@ -1,6 +1,7 @@
 class CompaniesController < ApplicationController
   before_action :set_company, only: %i[show update destroy]
 
+  load_and_authorize_resource
   # GET /companies
   def index
     @companies = Company.all

@@ -1,6 +1,7 @@
 class BusesController < ApplicationController
   before_action :set_bus, only: %i[show update destroy]
 
+  load_and_authorize_resource
   # GET /buses
   def index
     @buses = Bus.all

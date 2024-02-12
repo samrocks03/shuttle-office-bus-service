@@ -7,6 +7,8 @@ class Company < ApplicationRecord
   # has_one :schedule, dependent: :destroy
 
   validates :name, :location, presence: true
+  validates :name, uniqueness: true
+
   before_validation :normalise
 
   def normalise

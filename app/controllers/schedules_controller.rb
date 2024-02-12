@@ -1,6 +1,7 @@
 class SchedulesController < ApplicationController
   before_action :set_schedule, only: %i[show update destroy]
 
+  load_and_authorize_resource
   # GET /schedules
   def index
     @schedules = Schedule.all
@@ -15,11 +16,14 @@ class SchedulesController < ApplicationController
   # POST /schedules
   def create
     @schedule = Schedule.new(schedule_params)
-
-    if @schedule.save
-      render json: schedule_json(@schedule), status: :created, location: @schedule
+    if @schedule.date >= Date.today
+        if @schedule.save
+        render json: schedule_json(@schedule), status: :created, location: @schedule
+      else
+        render json: @schedule.errors.full_messages, status: :unprocessable_entity
+      end
     else
-      render json: @schedule.errors.full_messages, status: :unprocessable_entity
+      render json: { message: 'Cannot accept date before today!' }
     end
   end
 
@@ -62,4 +66,5 @@ class SchedulesController < ApplicationController
       available_seats: available_seats
     }
   end
+
 end

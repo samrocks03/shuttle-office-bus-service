@@ -1,6 +1,7 @@
 class RolesController < ApplicationController
   before_action :set_role, only: %i[show update destroy]
 
+  load_and_authorize_resource
   # GET /roles
   # GET /roles.json
   def index

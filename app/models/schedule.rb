@@ -5,6 +5,8 @@ class Schedule < ApplicationRecord
   validates :start_point, :arrival_time, :departure_time, presence: true
 
   validate :arr_dept_validation
+  validate :unique_schedule_within_duration, on: :create
+
 
   after_initialize :set_default_available_seats
 
@@ -16,6 +18,7 @@ class Schedule < ApplicationRecord
     update(available_seats: available_seats + 1)
   end
 
+
   private
 
   def arr_dept_validation
@@ -26,4 +29,18 @@ class Schedule < ApplicationRecord
   def set_default_available_seats
     self.available_seats ||= bus.capacity if bus
   end
+
+  def unique_schedule_within_duration
+    existing_schedules = Schedule.where(bus_id: bus_id, date: date)
+    overlapping_schedules = existing_schedules.select do |existing_schedule|
+      (existing_schedule.departure_time..existing_schedule.arrival_time).cover?(departure_time) ||
+        (departure_time..arrival_time).cover?(existing_schedule.departure_time)
+    end
+
+    if overlapping_schedules.any?
+      errors.add(:base, "Schedule overlaps with existing schedule for the same bus on the same day")
+    end
+  end
+
+
 end

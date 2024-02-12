@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_10_190809) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_12_142657) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,16 +29,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_10_190809) do
     t.text "location", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "payments", force: :cascade do |t|
-    t.decimal "amount", null: false
-    t.datetime "date"
-    t.string "method"
-    t.bigint "reservation_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["reservation_id"], name: "index_payments_on_reservation_id"
   end
 
   create_table "reservations", force: :cascade do |t|
@@ -73,16 +63,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_10_190809) do
     t.string "last_name", null: false
     t.string "phone_number", null: false
     t.bigint "company_id", null: false
-    t.bigint "role_id", null: false
+    t.bigint "role_id", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest", null: false
+    t.text "email", null: false
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "buses", "companies"
-  add_foreign_key "payments", "reservations"
   add_foreign_key "reservations", "schedules"
   add_foreign_key "reservations", "users"
   add_foreign_key "schedules", "buses"

@@ -22,6 +22,7 @@ gem 'active_model_serializers', '~> 0.10.12'
 gem 'jsonapi-serializer'
 gem 'cancancan'
 
+gem 'validates_email_format_of'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"

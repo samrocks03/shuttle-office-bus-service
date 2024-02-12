@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::API
   before_action :authorized
 
+  # load_and_authorize_resource
+
+  rescue_from CanCan::AccessDenied do |exception|
+    render json: { warning: exception.message, status: 'authorization failed' }
+  end
+
   private
 
   def encode_token(payload)
@@ -8,8 +14,8 @@ class ApplicationController < ActionController::API
 
     # This method takes a payload and returns a JWT token.
     # The payload is a hash that contains the user's id.
-    #  The JWT token is generated using the JWT.encode method,
-    #  which takes the payload and the secret key base as arguments.
+    # The JWT token is generated using the JWT.encode method,
+    # which takes the payload and the secret key base as arguments.
   end
 
   def decoded_token
