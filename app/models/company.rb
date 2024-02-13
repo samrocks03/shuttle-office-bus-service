@@ -12,7 +12,7 @@ class Company < ApplicationRecord
   before_validation :normalise
 
   def normalise
-    self.name = name.downcase.titleize
-    self.location = location.downcase.titleize
+    self.name = name&.downcase&.titleize
+    self.location = location&.downcase&.titleize
   end
 end

@@ -9,7 +9,7 @@ class Bus < ApplicationRecord
   private
 
   def normalize_model
-    self.model = model.downcase.titleize
-    self.number = number.downcase.titleize
+    self.model = model&.downcase&.titleize
+    self.number = number&.downcase&.titleize
   end
 end
