@@ -5,14 +5,19 @@ class BusesController < ApplicationController
   # GET /buses
   def index
     @buses = Bus.all
-    render json: @buses.map(&method(:bus_json))
+      # render json: @buses.map(&method(:as_json)), status: :created, location: @bus
+    # render json: @buses.map(&method(:as_json))
+    render json: @buses.as_json
+
+    # render json: @buses.map(&method(:bus_json))
     # @buses = Bus.all
   end
 
   # GET /buses/1
   def show
     # render json: @bus
-    render json: bus_json(@bus)
+    render json: @bus.as_json
+    # render json: bus_json(@bus)
   end
 
   # POST /buses
@@ -20,7 +25,8 @@ class BusesController < ApplicationController
     @bus = Bus.new(bus_params)
 
     if @bus.save
-      render json: bus_json(@bus), status: :created, location: @bus
+      render json: @bus.as_json, status: :created, location: @bus
+      # render json: bus_json(@bus), status: :created, location: @bus
     else
       render json: @bus.errors.full_messages, status: :unprocessable_entity
     end
@@ -30,7 +36,7 @@ class BusesController < ApplicationController
   # PATCH/PUT
   def update
     if @bus.update(bus_params)
-      render json: bus_json(@bus)
+      render json: @bus.as_json, status: :ok
     else
       render json: @bus.errors.full_messages, status: :unprocessable_entity
     end
@@ -54,13 +60,4 @@ class BusesController < ApplicationController
   end
 
   # Custom method to render bus JSON
-  def bus_json(bus)
-    {
-      id: bus.id,
-      number: bus.number,
-      capacity: bus.capacity,
-      model: bus.model,
-      company_id: bus.company_id
-    }
-  end
 end

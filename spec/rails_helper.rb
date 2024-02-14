@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'faker'
 require 'simplecov'
+require 'support/request_helper.rb'
 SimpleCov.start
 
 
@@ -23,4 +24,5 @@ RSpec.configure do |config|
   # Include Shoulda Matchers methods
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  config.include RequestHelper
 end

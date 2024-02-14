@@ -18,13 +18,13 @@ RSpec.describe Bus, type: :model do
       describe '#normalize_model' do
         it 'downcases and titleizes the model' do
           bus = Bus.new(model: 'Some Model')
-          bus.valid?
+          bus.validate
           expect(bus.model).to eq('Some Model')
         end
 
         it 'downcases and titleizes the number' do
           bus = Bus.new(number: 'AB123')
-          bus.valid?
+          bus.validate
           expect(bus.number).to eq('Ab123')
         end
       end

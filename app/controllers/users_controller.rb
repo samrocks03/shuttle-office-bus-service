@@ -10,18 +10,19 @@ class UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render json: @users
+    render json: @users, status: :ok
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @users
   end
 
   # POST /login
   def login
     @user = User.find_by!(email: login_params[:email])
 
+    # byebug
     if @user.authenticate(login_params[:password])
       token = encode_token({user_id: @user.id})
       render json: {
@@ -38,8 +39,10 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
+    # byebug
     @user = User.new(user_params)
     @token = encode_token(user_id: @user.id)
+    # byebug
     if @user.save
       render json: {
         user: UserSerializer.new(@user),
@@ -63,7 +66,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     @user.destroy
-    render json: { message: "User Successfully deleted"}
+    render json: { message: "User Successfully deleted"}, status: :ok
   end
 
   private
@@ -75,6 +78,7 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
+    # byebug
     params.require(:user).permit(:first_name, :last_name, :phone_number,:email, :company_id, :password)
   end
 

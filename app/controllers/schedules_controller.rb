@@ -4,7 +4,7 @@ class SchedulesController < ApplicationController
   load_and_authorize_resource
   # GET /schedules
   def index
-    @schedules = Schedule.all
+    @schedules = Schedule.where('date >= ?', Date.today)
     render json: @schedules.map(&method(:schedule_json))
   end
 

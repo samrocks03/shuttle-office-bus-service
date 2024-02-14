@@ -10,7 +10,8 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1
   def show
-    render json: @company
+    # byebug
+    render json: @company, status: :ok
   end
 
   # POST /companies

@@ -10,12 +10,12 @@ class Ability
     # role.name == "admin"
     # admin = role.find_by(name: "admin")
 
-
+    # byebug
     if user.admin? #This will contain admin role
       can :manage, :all
     elsif user.employee? # User role
       can [:create], User
-      can [:update,:read ], User, user_id: user.id
+      can [:update,:read ], User, id: user.id
       cannot [:read, :delete], User
 
       cannot :manage, Bus # user cannot manage buses
