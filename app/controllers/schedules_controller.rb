@@ -1,16 +1,31 @@
 class SchedulesController < ApplicationController
-  before_action :set_schedule, only: %i[show update destroy]
+  # before_action :set_schedule, only: %i[show update destroy]
 
   load_and_authorize_resource
   # GET /schedules
   def index
-    @schedules = Schedule.where('date >= ?', Date.today)
+    # from where is @schedules coming ???? ?
+
+    # matches only those schedules that have a bus_id matching the bus_id
+    # parameter passed in the request, if such parameter is present then
+    # it will return all schedules for that particular bus.
+    @schedules = @schedules.where(bus_id: params[:bus_id]) if params[:bus_id].present?
+    # @schedules = Schedule.where('date >= ?', Date.today)
+    # @schedules = Schedule.where('name ILIKE ?', params[:search_term]).all
+
     render json: @schedules.map(&method(:schedule_json))
   end
 
+
   # GET /schedules/1
   def show
-    render json: schedule_json(@schedule)
+    # find() method is called when load_and_authorise is used while loading an Object.
+    @schedule = params[:bus_id].present? && @schedule.bus_id == params[:bus_id].to_i ? @schedule : {}
+    # if @schedule.present?
+      render json: schedule_json(@schedule)
+    # else
+      # render json: { message: 'Schedule not found' }, status: :not_found
+    # end
   end
 
   # POST /schedules
@@ -43,10 +58,12 @@ class SchedulesController < ApplicationController
 
   private
 
+
+  # why after commenting this out, only a single schedule can be viewed in postman
   # Use callbacks to share common setup or constraints between actions.
-  def set_schedule
-    @schedule = Schedule.find(params[:id])
-  end
+  # def set_schedule
+  #   @schedule = Schedule.find(params[:id])
+  # end
 
   # Only allow a list of trusted parameters through.
   def schedule_params
@@ -55,6 +72,8 @@ class SchedulesController < ApplicationController
 
 
   def schedule_json(schedule)
+    return {} unless schedule.present?
+
     available_seats = schedule.bus.capacity - schedule.reservations.count
     {
       id: schedule.id,

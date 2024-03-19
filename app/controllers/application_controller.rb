@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::API
   before_action :authorized
-
+  # rescue_from ActiveRecord::RecordNotFound do |excption|
+  #   render json: { error: excption.message, status: 'record not found'}
+  # end
   # load_and_authorize_resource
 
   rescue_from CanCan::AccessDenied do |exception|

@@ -5,13 +5,12 @@ class CompaniesController < ApplicationController
   # GET /companies
   def index
     @companies = Company.all
-    render json: @companies
+    render json: @companies.map(&method(:companies_json))
   end
 
   # GET /companies/1
   def show
-    # byebug
-    render json: @company, status: :ok
+    render json: companies_json(@company), status: :ok
   end
 
   # POST /companies
@@ -19,7 +18,7 @@ class CompaniesController < ApplicationController
     @company = Company.new(company_params)
 
     if @company.save
-      render json: @company, status: :created, location: @company
+      render json: companies_json(@company), status: :created, location: @company
     else
       render json: @company.errors.full_messages, status: :unprocessable_entity
     end
@@ -29,7 +28,7 @@ class CompaniesController < ApplicationController
   # PATCH/PUT
   def update
     if @company.update(company_params)
-      render json: @company
+      render json: companies_json(@company)
     else
       render json: @company.errors.full_messages, status: :unprocessable_entity
     end
@@ -51,4 +50,13 @@ class CompaniesController < ApplicationController
     params.require(:company).permit(:name, :location)
   end
 
+
+  # GET /companies/json
+  def companies_json(company)
+    {
+      id: company.id,
+      name: company.name,
+      location: company.location
+    }
+  end
 end

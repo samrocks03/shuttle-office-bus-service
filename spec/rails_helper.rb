@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'faker'
 require 'simplecov'
+
 require 'support/request_helper.rb'
 SimpleCov.start
 

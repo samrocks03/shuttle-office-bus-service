@@ -65,6 +65,13 @@ class ReservationsController < ApplicationController
       id: reservation.id,
       user_id: reservation.user_id,
       schedule_id: reservation.schedule_id,
+      schedule: {
+        id: reservation.schedule.id,
+        start_point: reservation.schedule.start_point,
+        arrival_time: reservation.schedule.arrival_time.strftime('%H:%M'), # Format as HH:MM
+        departure_time: reservation.schedule.departure_time.strftime('%H:%M'), # Format as HH:MM
+        date: reservation.schedule.date,
+      }
     }
   end
 end

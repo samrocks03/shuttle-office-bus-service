@@ -15,13 +15,14 @@ class Ability
       can :manage, :all
     elsif user.employee? # User role
       can [:create], User
-      can [:update,:read ], User, id: user.id
+      can [:update,:read], User, id: user.id
       cannot [:read, :delete], User
 
-      cannot :manage, Bus # user cannot manage buses
-      cannot :manage, Company # user cannot manage companies
+      cannot [:update, :delete], Bus # user cannot manage buses
+      cannot [:update, :delete], Company # user cannot manage companies
       cannot [:create, :delete, :update], Schedule # user cannot manage schedules
 
+      can :read, Company, user_id: user.id # user
       can :read, Schedule # user can read schedule
       can [:create, :read], Reservation, user_id: user.id # can view only his reservation
       cannot [:update, :destroy], Reservation # User cannot update or delete reservations

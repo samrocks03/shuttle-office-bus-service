@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # apipie
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -9,6 +10,10 @@ Rails.application.routes.draw do
   # root "posts#index"
   #
   post "/login", to: "users#login"
+
+  resources :buses do
+    resources :schedules
+  end
 
   resources :roles
   resources :companies
